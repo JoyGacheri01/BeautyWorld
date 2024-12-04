@@ -1,0 +1,292 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+        
+        <section id="products" class="products section bg-light py-5">
+            <!-- New Arrivals -->
+            <div class="tab-pane fade show active" id="featured">
+                <div class="row gy-4">
+                    {% for product in products %}
+                    
+                        <div class="col-md-3 col-sm-6">
+                            {% if product.category == 'new_arrivals' %}
+                            <div class="product-card text-center p-4 rounded shadow-sm">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">
+                                <h5 class="fw-bold">{{ product.name }}</h5>
+                                <p class="text-muted mb-2">${{ product.price }}</p>
+                                <a href="{% url 'cart:product_detail' product.id %}" class="btn btn-outline-primary btn-sm">View Product</a>
+                                <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    {% empty %}
+                        <p class="text-center">No new arrivals available at the moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Best Sellers -->
+            <div class="tab-pane fade" id="bestsellers">
+                <div class="row gy-4">
+                    {% for product in products %}
+                    {% if product.category == 'best_sellers' %}
+                        <div class="col-md-3 col-sm-6">
+                            <div class="product-card text-center p-4 rounded shadow-sm">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">
+                                <h5 class="fw-bold">{{ product.name }}</h5>
+                                <p class="text-muted">{{ product.description }}</p>
+                                <p class="text-primary fw-bold">${{ product.price }}</p>
+                                <a href="{% url 'cart:product_detail' product.id %}" class="btn btn-outline-primary btn-sm">View Product</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% empty %}
+                        <p class="text-center">No best sellers available at the moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Discounted Items -->
+            <div class="tab-pane fade" id="discounted">
+                <div class="row gy-4">
+                    {% for product in discounted_products %}
+                        <div class="col-md-3 col-sm-6">
+                            <div class="product-card text-center p-4 rounded shadow-sm bg-danger text-white">
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">
+                                <h5 class="fw-bold">{{ product.name }}</h5>
+                                <p class="text-light small">{{ product.description }}</p>
+                                <p>
+                                    <strike class="text-warning">${{ product.original_price }}</strike>
+                                    <span class="text-success">${{ product.discounted_price }}</span>
+                                </p>
+                                <a href="{% url 'product_detail' product.id %}" class="btn btn-light btn-sm">View Product</a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-center">No discounted items available at the moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+      
+        <section id="cleansing-products" class="container mt-5">
+            <h2 class="text-center mb-4">Hair Cleansing Products</h2>
+    
+            <!-- First Row -->
+            <div class="row">
+            {% for product in products %}
+            {% if product.category == 'cleansing' %}
+                <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-price">${{ product.price }}</p>
+                        <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
+                        <!-- Quick View Button -->
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+                </div>
+    
+                <!-- Quick View Modal -->
+                <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="quickViewModalLabel{{ product.id }}">{{ product.name }} - Quick View</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>{{ product.name }}</h5>
+                                        <p>{{ product.description }}</p>
+                                        <p class="card-price">${{ product.price }}</p>
+                                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% endfor %}
+            </div>
+        </section>
+    
+        <!-- Hair Oil Products -->
+        <section id="oil-products" class="container mt-5">
+            <h2 class="text-center mb-4">Hair Oil Products</h2>
+    
+            <!-- First Row -->
+            <div class="row">
+            {% for product in products %}
+            {% if product.category == 'hair_oil' %}
+                <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-price">${{ product.price }}</p>
+                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                        <!-- Quick View Button -->
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+                </div>
+    
+                <!-- Quick View Modal -->
+                <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="quickViewModalLabel{{ product.id }}">{{ product.name }} - Quick View</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>{{ product.name }}</h5>
+                                        <p>{{ product.description }}</p>
+                                        <p class="card-price">${{ product.price }}</p>
+                                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% empty %}
+            <p>No content available at the moment. Try Again Later</p>
+            {% endfor %}
+            </div>
+        </section>
+    
+        <section id="treatment-products" class="container mt-5">
+            <h2 class="text-center mb-4">Hair Treatment Products</h2>
+    
+            <!-- First Row -->
+            <div class="row">
+            {% for product in products  %}
+            {% if product.category == 'treatment' %}
+                <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-price">${{ product.price }}</p>
+                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                        <!-- Quick View Button -->
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+                </div>
+    
+                <!-- Quick View Modal -->
+                <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="quickViewModalLabel{{ product.id }}">{{ product.name }} - Quick View</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>{{ product.name }}</h5>
+                                        <p>{{ product.description }}</p>
+                                        <p class="card-price">${{ product.price }}</p>
+                                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% empty %}
+            <p>No content available at the moment. Try Again Later</p>
+            {% endfor %}
+            </div>
+        </section>
+    
+        <section id="braiding-products" class="container mt-5">
+            <h2 class="text-center mb-4">Hair Braiding Products</h2>
+    
+            <!-- First Row -->
+            <div class="row">
+            {% for product in products %}
+            {% if product.category == 'braiding' %}
+                <div class="col-md-3 mb-4">
+                <div class="card">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-price">${{ product.price }}</p>
+                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                        <!-- Quick View Button -->
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
+                            Quick View
+                        </button>
+                    </div>
+                </div>
+                </div>
+    
+                <!-- Quick View Modal -->
+                <div class="modal fade" id="quickViewModal{{ product.id }}" tabindex="-1" aria-labelledby="quickViewModalLabel{{ product.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="quickViewModalLabel{{ product.id }}">{{ product.name }} - Quick View</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>{{ product.name }}</h5>
+                                        <p>{{ product.description }}</p>
+                                        <p class="card-price">${{ product.price }}</p>
+                                        <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% empty %}
+            <p>No content available at the moment. Try Again Later</p>
+            {% endfor %}
+            </div>
+        </section>
+
+
+
+{% endblock %}

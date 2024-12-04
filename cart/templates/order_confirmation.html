@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+<h1 class="text-center my-5">Order Confirmation</h1>
+
+<div class="container">
+    <h3>Order #{{ order.id }} - Status: {{ order.status }}</h3>
+    <h4>Total Price: ${{ order.total_price }}</h4>
+    <p>Your order has been confirmed successfully.</p>
+    <a href="{% url 'cart:view_cart' %}" class="btn btn-primary">Back to Shopping</a>
+</div>
+
+{% endblock %}

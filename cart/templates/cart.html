@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+<!-- Shopping Cart Title -->
+<h1 class="text-center my-5">Your Shopping Cart</h1>
+
+<!-- Cart Container -->
+<div class="container">
+    <!-- Cart Items List -->
+    <div class="row">
+        {% for item in cart_items %}
+        <div class="col-12 col-sm-6 col-md-3 col-lg-2 mb-4"> <!-- Adjust column size for different screen widths -->
+            <div class="card shadow-sm" style="height: 100%; border: 1px solid #ddd; padding: 10px;">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                <div class="card-body p-2">
+                    <h6 class="card-title" style="font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item.product.name }}</h6>
+                    <p class="card-text" style="font-size: 12px;">Quantity: {{ item.quantity }}</p>
+                    <p class="card-text" style="font-size: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item.product.description|slice:":50" }}...</p>
+                    <p class="card-text" style="font-size: 12px;">Price: ${{ item.product.price }}</p>
+                    <!-- Remove Button with Styling -->
+                    <a href="{% url 'cart:remove_from_cart' item.id %}" class="btn btn-danger btn-sm btn-block">Remove</a>
+                    <a href="{% url 'cart:checkout' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-center">Your cart is empty. <a href="{% url 'cart:product' %}" class="btn btn-primary">Continue Shopping</a></p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Total Price Section -->
+    {% if cart_items %}
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <h3 class="mb-4">Total Price: ${{ total_price }}</h3>
+            <a href="{% url 'cart:checkout' %}" class="btn btn-success btn-lg">Proceed to Checkout</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Continue Shopping Button -->
+    <div class="row mt-4">
+        <div class="col-12 text-center">
+            <a href="{% url 'cart:product' %}" class="btn btn-outline-primary btn-lg">Continue Shopping</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

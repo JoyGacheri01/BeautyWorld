@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section py-5 bg-light">
+
+        <div class="container" data-aos="fade-up">
+          <!-- Section Title -->
+          <div class="section-title text-center mb-5">
+            <h2 class="fw-bold">Get in Touch</h2>
+            <p class="text-muted">We’d love to hear from you! Whether you have a question about our products, pricing, or anything else, our team is ready to assist.</p>
+          </div>
+              
+          <div class="mb-5">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127649.1228130807!2d37.084477650000004!3d-1.1353075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f4616a21d035d%3A0xd46c6efa3589f45f!2sJuja!5e0!3m2!1sen!2ske!4v1732453477108!5m2!1sen!2ske" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div><!-- End Google Maps -->
+      
+          <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-7">
+              <form action="/insert_message/" method="POST" enctype="multipart/form-data" class="bg-white shadow p-4 rounded">
+                {% csrf_token %}
+                <div class="row gy-3">
+                  <div class="col-md-6">
+                    <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                  </div>
+                  <div class="col-md-6">
+                    <input type="email" name="email" class="form-control" placeholder="Your Email" required>
+                  </div>
+                  <div class="col-12">
+                    <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                  </div>
+                  <div class="col-12">
+                    <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
+                  </div>
+                  <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary px-4 py-2">Send Message</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+      
+            <!-- Contact Information -->
+            <div class="col-lg-5">
+              <div class="bg-white shadow p-4 rounded">
+                <h4 class="fw-bold">Contact Information</h4>
+                <p class="text-muted">Feel free to reach out to us through any of the following channels:</p>
+                <ul class="list-unstyled">
+                  <li class="mb-3">
+                    <i class="bi bi-geo-alt-fill text-primary"></i>
+                    <span class="ms-2">Juja, Nairobi, Kenya</span>
+                  </li>
+                  <li class="mb-3">
+                    <i class="bi bi-envelope-fill text-primary"></i>
+                    <span class="ms-2">dyojdouglas34@gmail.com</span>
+                  </li>
+                  <li class="mb-3">
+                    <i class="bi bi-telephone-fill text-primary"></i>
+                    <span class="ms-2">+254 784542939</span>
+                  </li>
+                  <li>
+                    <i class="bi bi-clock-fill text-primary"></i>
+                    <span class="ms-2">Mon - Fri: 9 AM - 6 PM</span>
+                  </li>
+                </ul>
+                <!-- Social Links -->
+                <div class="social-links mt-4">
+                  <h5 class="fw-bold">Follow Us On</h5>
+                  <a href="https://www.facebook.com/profile.php?id=100090377827245" target="_blank" class="text-primary me-3" title="Facebook">
+                    <i class="bi bi-facebook"></i>
+                  </a>
+                  <a href="https://x.com/Yallits_joy" target="_blank" class="text-primary me-3" title="Twitter">
+                    <i class="bi bi-twitter"></i>
+                  </a>
+                  <a href="https://www.instagram.com/irehcag?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="text-primary" title="Instagram">
+                    <i class="bi bi-instagram"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+{% endblock %}

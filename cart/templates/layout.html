@@ -1,0 +1,163 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Irehcag's Beauty</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{% static 'images/favicon-32x32.png' %}" rel="icon">
+  <link href="{% static 'images/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="index-page">
+  <header id="header" class="header">
+    <div class="container-fluid position-relative">
+      <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'cart:home' %}">Irehcag's Wesite</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'cart:home' %}">Home<br></a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart:product' %}">Products</a>
+              </li>
+
+              <li class="nav-item">
+                <a class= "nav-link" href="{% url 'cart:blog_list' %}">Blog</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Product Categories
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'cart:new_arrivals' %}">New Arrivals</a></li>
+                  <li><a class="dropdown-item" href="{% url 'cart:best_seller' %}">Best Sellers</a></li>
+                  <li><a class="dropdown-item" href="{% url 'cart:discounted' %}">Discounted</a></li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'cart:view_cart' %}">
+                      Cart
+                      {% if user.is_authenticated %}
+                          ({% with user.cart.items.count as item_count %}{{ item_count }}{% endwith %})
+                      {% else %}
+                          (0)
+                      {% endif %}
+                  </a>
+              </li>
+
+              <li class="nav-item" >
+                <a class="nav-link" href="{% url 'cart:contact' %}">Contact</a>
+              </li>
+
+              <form action="/search/" method = "get" class="d-flex" >
+                <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+
+
+
+
+
+
+  {% block code %}
+
+  {% endblock %}
+
+  <footer id="footer" class="footer dark-background">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <div class=" footer-about">
+            <a href="{% url 'cart:home' %}" class="logo d-flex align-items-center">
+              <span class="sitename">Irehcag's Beauty</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>Juja Nairobi</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+254 785 542 939</span></p>
+              <p><strong>Email:</strong> <span>dyojdouglas34@gmail.com</span></p>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright text-center">
+      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+
+        <div class="d-flex flex-column align-items-center align-items-lg-start">
+          <div>
+            © Copyright <strong><span>MyWebsite</span></strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+      
+            Designed by <a href="https://joygacheri01.github.io/Portfolio/">BootstrapMade</a>
+          </div>
+        </div>
+
+        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+          <a href=""><i class="bi bi-twitter-x"></i></a>
+          <a href=""><i class="bi bi-facebook"></i></a>
+          <a href=""><i class="bi bi-instagram"></i></a>
+          <a href=""><i class="bi bi-linkedin"></i></a>
+        </div>
+
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

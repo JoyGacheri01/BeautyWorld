@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+<h1 class="text-center my-5">Order Summary</h1>
+
+<div class="container">
+    <h3>Order #{{ order.id }}</h3>
+    <p>Status: {{ order.status }}</p>
+    <h4>Total Price: ${{ order.total_price }}</h4>
+
+    <h5>Order Items:</h5>
+    <ul>
+        {% for item in order.items.all %}
+            <li>{{ item.product.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.price }} each</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'cart:order_confirmation' order.id %}" class="btn btn-primary btn-lg">Confirm Order</a>
+</div>
+
+{% endblock %}

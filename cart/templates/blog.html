@@ -1,0 +1,84 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block code %}
+    <!-- Blog Page Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="mb-4 text-center">Discover Our Blogs</h2>
+            <div class="row justify-content-center">
+                {% for post in posts %}
+                <div class="col-md-4 mb-4">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <!-- Card Front -->
+                            <div class="flip-card-front">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid rounded">
+                                <h5 class="text-center mt-3">{{ post.title }}</h5>
+                            </div>
+                            <!-- Card Back -->
+                            <div class="flip-card-back p-3 d-flex flex-column justify-content-between">
+                                <p class="text-muted">{{ post.excerpt }}</p>
+                                <a href="{% url 'cart:blog_details' post.id %}" class="btn btn-primary mt-3">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center">No blog posts available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="hair-oil-tips">
+        <div class="container">
+            <div class="row">
+                <h1 class="section-title">Top Tips for Choosing the Perfect Hair Oil</h1>
+                <p class="intro-text">Selecting the right hair oil can make a significant difference in the health and appearance of your hair. Here’s how to pick the best one for your hair type:</p>
+                
+                <ul class="tips-list">
+                    <li class="tip-item">
+                        <strong>Rosemary Oil:</strong> Ideal for promoting hair thickness and stimulating hair follicles for stronger, fuller hair.
+                    </li>
+                    <li class="tip-item">
+                        <strong>Marine Collagen Peptides:</strong> Helps in boosting hair growth and improving hair density, leaving your strands healthy and vibrant.
+                    </li>
+                    <li class="tip-item">
+                        <strong>Olive Oil:</strong> Prevents hair breakage and nourishes the scalp for softer, more manageable hair.
+                    </li>
+                    <li class="tip-item">
+                        <strong>Natural Hydrating Shampoos & Conditioners:</strong> Choose formulas free from chemicals to avoid product buildup and ensure your hair stays fresh and nourished.
+                    </li>
+                    <li class="tip-item">
+                        <strong>Lightweight Oils:</strong> If you have fine hair, opt for lightweight oils that won’t weigh your hair down.
+                    </li>
+                    <li class="tip-item">
+                        <strong>Coconut Oil:</strong> Perfect for dry hair as it locks in moisture and enhances shine without making your hair greasy.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="mb-4 text-center">What Our Customers Say</h2>
+            <div class="row">
+                {% for testimonial in testimonials %}
+                <div class="col-md-6 mb-4">
+                    <div class="testimonial-card p-4 bg-white rounded shadow">
+                        <blockquote class="blockquote">
+                            <p class="mb-3">{{ testimonial.content }}</p>
+                            <footer class="blockquote-footer">{{ testimonial.author }}</footer>
+                        </blockquote>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-center">No testimonials available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
