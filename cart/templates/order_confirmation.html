@@ -1,13 +1,22 @@
+<!-- order_confirmation.html -->
+
 {% extends 'layout.html' %}
-{% load static %}
+
 {% block code %}
-<h1 class="text-center my-5">Order Confirmation</h1>
+<h1>Order Confirmation</h1>
 
-<div class="container">
-    <h3>Order #{{ order.id }} - Status: {{ order.status }}</h3>
-    <h4>Total Price: ${{ order.total_price }}</h4>
-    <p>Your order has been confirmed successfully.</p>
-    <a href="{% url 'cart:view_cart' %}" class="btn btn-primary">Back to Shopping</a>
-</div>
+<p>Thank you for your order!</p>
 
+<h2>Order #{{ order.id }}</h2>
+<p>Status: {{ order.status }}</p>
+<p>Total Price: ${{ order.total_price }}</p>
+
+<h3>Items in Your Order:</h3>
+<ul>
+    {% for item in order.items.all %}
+    <li>{{ item.quantity }} x {{ item.product.name }} - ${{ item.price }}</li>
+    {% endfor %}
+</ul>
+
+<p><a href="{% url 'order:order' order.id %}">View Order Details</a></p>
 {% endblock %}

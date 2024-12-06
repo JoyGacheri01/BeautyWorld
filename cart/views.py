@@ -6,30 +6,49 @@ from . models import BlogPost, Testimonial, Order, OrderItem
 from django.db.models import Q
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
+import logging
+from django.contrib import messages
 
 # Create your views here.
 def view_cart(request):
-    if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-        total_price = sum(item.product.price* item.quantity for item in cart_items)
-    else:
-        cart_items = []
-        total_price = 0
-    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    cart = request.session.get('cart', {})
+    cart_items = []
+    total_price = 0
+
+    for product_id, quantity in cart.items():
+        product = get_object_or_404(Product, id=product_id)
+        total_price += product.price * quantity
+        cart_items.append({'product': product, 'quantity': quantity})
+
+    empty_cart_message = "Your cart is empty." if not cart_items else ""
+    return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price, 'empty_cart_message': empty_cart_message})
+
+logger = logging.getLogger(__name__)
 
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-    cart_item, created = CartItem.objects.get_or_create(user=request.user, product=product)
+    cart = request.session.get('cart', {})
+    
+    if product_id in cart:
+        cart[product_id] += 1  # Increment quantity if already in cart
+    else:
+        cart[product_id] = 1  # Add new product to cart
 
-    cart_item.quantity += 1
-    cart_item.save()
+    request.session['cart'] = cart  # Save the updated cart in the session
+    messages.success(request, f"Added {product.name} to your cart.")
     return redirect('cart:view_cart')
 
-def remove_from_cart(request, item_id):
-    cart_item = get_object_or_404(CartItem, id=item_id)
-    cart_item.delete()
-    return redirect('cart:view_cart')
+def remove_from_cart(request, product_id):
+    cart = request.session.get('cart', {})  # Get cart from session (default to empty if not found)
 
+    # Try to remove the product from the cart
+    if cart.pop(str(product_id), None):
+        request.session['cart'] = cart  # Save the updated cart in the session
+        messages.success(request, "Item removed from your cart.")
+    else:
+        messages.warning(request, "Item not found in your cart.")
+    
+    return redirect('cart:view_cart')
 
 
 def product(request):
@@ -96,14 +115,13 @@ def blog_details(request, blog_id):
     })
 
 def search(request):
-    query = request.GET.get('search', '')
+    query = request.GET.get('q', '')
     results = []
     if query:
         
         product_results = Product.objects.filter(
             Q(name__icontains=query) | Q(description__icontains=query)
         )
-
         # Search in specific product categories
         new_arrival_results = NewArrival.objects.filter(
             Q(name__icontains=query) | Q(description__icontains=query) | Q(category__icontains=query)
@@ -133,38 +151,38 @@ def search(request):
             list(treatment_results) + list(braiding_results)
     return render(request, 'results.html', {'results': results, 'query': query})
 
-def checkout(request):
-    cart_items = CartItem.objects.filter(user=request.user, is_ordered=False)
 
-    if not cart_items:
-        return redirect('cart:product')
-    
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
-
-    order = Order.objects.create(
-        user=request.user,
-        total_price=total_price,
-    )
-    for item in cart_items:
-        OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            price = item.product.price
-        )
-        item.is_ordered = True
-        item.save()
-    return render(request, 'order.html', order_id= order.id)
-
+@login_required
 def order(request, order_id):
     order = Order.objects.get(id=order_id, user=request.user)
-    return render(request, 'ordery.html', {
+    return render(request, 'order.html', {
         'order': order
     })
 
+@login_required
 def order_confirmation(request, order_id):
     order = Order.objects.get(id=order_id, user=request.user)
     order.status = 'Completed'
     order.save()
     CartItem.objects.filter(user=request.user, is_ordered=False).delete()
     return render(request, 'order_confirmation.html', {'order': order})
+
+@login_required
+def checkout(request):
+    if request.method == 'POST':
+        cart_items = CartItem.objects.filter(user=request.user, is_ordered=False)
+        if not cart_items:
+            return HttpResponse("Your Cart is empty, cannot proceed with checkout.")
+        total_price = sum(item.product.price * item.quantity for item in cart_items)
+        order = Order.objects.create(user=request.user, total_price=total_price)
+
+        for item in cart_items:
+            OrderItem.objects.create(
+                order=order, 
+                product=item.product, 
+                price=item.product.price, 
+                quantity=item.quantity
+            )
+        cart_items.update(is_ordered=True)
+        return redirect('order_confirmation', order.id)
+    return render(request, 'checkout.html')

@@ -15,7 +15,7 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">{{ product.description }}</p>
                             <p class="card-price">${{ product.price }}</p>
-                            <a href="{% url 'cart:add_to_cart'  product.id %}" class="btn btn-primary">Add to Cart</a>
+                            <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
                             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
                                 Quick View
                             </button>
@@ -42,6 +42,7 @@
                     </div>
                 </div>
             {% endfor %}
+            <!-- Pagination controls can be added here -->
         {% else %}
             <p>No results found for your search.</p>
         {% endif %}
