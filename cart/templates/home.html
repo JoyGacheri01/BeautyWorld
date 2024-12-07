@@ -331,7 +331,7 @@
       <!-- Tabs for Categories -->
       <ul class="nav nav-tabs justify-content-center mb-4">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#featured">New Arrivals</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#new_arrival">New Arrivals</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#bestsellers">Best Sellers</a>
@@ -342,11 +342,11 @@
       </ul>
   
       <!-- Tab Content -->
-      <div class="tab-content">
+      <div class="tab-content id="new_arrival">
         <div class="tab-pane fade show active" id="featured">
           <div class="container py-5">
             <div class="row product-list">
-                {% for product in products %}
+                {% for product in new_arrivals %}
                 <div class="col-lg-2 col-md-3 col-sm-4 mb-4">
                     <div class="product-card shadow-sm rounded overflow-hidden">
                         <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid zoom-in">
@@ -360,11 +360,7 @@
     
                             <p class="product-price text-primary fw-bold">${{ product.price }}</p>
                             <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary btn-sm w-100">Add to Cart</a>
-                            
-                            <!-- Quick View Button -->
-                            <button class="btn btn-secondary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
-                                Quick View
-                            </button>
+                            <a href="{% url 'cart:products' product.id %}" class="btn btn-success">View Products</a>
                         </div>
                     </div>
                 </div>
@@ -377,7 +373,7 @@
         <!-- Best Sellers -->
         <div class="tab-pane fade" id="bestsellers">
           <div class="row gy-4">
-            {% for product in products %}
+            {% for product in best_sellers %}
             <div class="col-md-3 col-sm-6">
               <div class="product-card text-center p-4 rounded shadow-sm">
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">

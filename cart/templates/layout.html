@@ -32,7 +32,8 @@
     <div class="container-fluid position-relative">
       <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'cart:home' %}">Irehcag's Wesite</a>
+          <a class="navbar-brand" href="{% url 'cart:home' %}">
+            <img src="{% static 'images/favicon-32x32.png' %}" alt="Logo"  class="d-inline-block align-text-top">Irehcag's Wesite</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -79,6 +80,8 @@
                 <input class="form-control me-2" name="q" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
               </form>
+              <button type="button" class="btn btn-outline-primary">Primary</button>
+              <a class="btn-getstarted" href="{% url 'signup' %}">Get Started</a>
             </ul>
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
           </div>
