@@ -107,7 +107,8 @@ def contact(request):
     return render(request, 'contact.html')
 
 def home(request):
-    return render(request, 'home.html')
+    products = Product.objects.all()
+    return render(request, 'home.html', {'products': products})
 
 
 def blog_list(request):
