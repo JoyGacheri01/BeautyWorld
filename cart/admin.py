@@ -1,14 +1,13 @@
 from django.contrib import admin
 from .models import Product, CartItem, NewArrival, BestSellers, Discounted, Cleansing, Oil, Treatment, Braiding
-from . models import BlogPost, Testimonial, Order, OrderItem
+from . models import BlogPost, Testimonial, Order, OrderItem, Message
 
-# Admin for BaseProduct subclasses
+
 class BaseProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'price', 'category')
     search_fields = ('name', 'description')
     list_filter = ('category',)
 
-# Admin for Product (does not have a 'category' field)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'price', 'stock')
     search_fields = ('name', 'description')
@@ -31,3 +30,4 @@ admin.site.register(BlogPost)
 admin.site.register(Testimonial)
 admin.site.register(Order)
 admin.site.register(OrderItem)
+admin.site.register(Message)
