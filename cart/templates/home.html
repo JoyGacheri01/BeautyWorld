@@ -47,66 +47,56 @@
     </section>
     <!-- /Hero Section -->   
 
-    <!-- About Section -->
-    <section id="about" class="about section bg-light py-5">
+    <section id="about" class="about-section py-5">
       <div class="container">
-        {% for about in about %}
-    
-        <!-- Section Title -->
-        <div class="section-title text-center mb-5" data-aos="fade-up">
-          <h2>{{ about.about_title }} </h2>
-          <p>{{ about.about_desc }} </p>
-        </div>
-    
-        <div class="row align-items-center g-5" data-aos="fade-up" data-aos-delay="200">
-    
-          <!-- Image Section -->
-          <div class="col-lg-6">
-            <div class="about-img">
-              <img src="/media/{{ about.about_img }}" class="img-fluid rounded shadow-lg" alt="Irehcag's Beauty">
-            </div>
+          <div class="row align-items-center">
+              <!-- Image Section -->
+              <div class="col-lg-4 text-center mb-4 mb-lg-0">
+                  <img src="{% static 'images/irehcags.jpg' %}" alt="About Irehcag's Beauty" class="img-fluid rounded shadow-lg">
+              </div>
+              <!-- Text Content Section -->
+              <div class="col-lg-8">
+                  <h2 class="section-title mb-4">About Irehcag's Beauty</h2>
+                  <p class="about-text">
+                      Welcome to <span class="highlight">Irehcag's Beauty</span>, your trusted destination for premium hair care products and accessories. 
+                      We believe in empowering you to embrace your unique beauty with products designed to inspire confidence and elevate your self-care routine.
+                  </p>
+                  <p class="about-text">
+                      From luxurious combs and brushes to nourishing hair treatments, every product in our collection is carefully selected to ensure
+                      the highest quality and effectiveness. We are passionate about helping you look and feel your best, every single day.
+                  </p>
+                  <!-- Feature Highlights -->
+                  <div class="d-flex align-items-start mt-4">
+                      <i class="bi bi-heart-fill text-primary me-3 fs-4"></i>
+                      <div>
+                          <h5 class="feature-title">Passion for Quality</h5>
+                          <p>We partner with trusted brands to offer only the highest quality products, tailored to your needs.</p>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-start mt-4">
+                      <i class="bi bi-stars text-secondary me-3 fs-4"></i>
+                      <div>
+                          <h5 class="feature-title">Celebrating Individuality</h5>
+                          <p>Our products are designed to help you embrace and enhance your unique style, empowering you every day.</p>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-start mt-4">
+                      <i class="bi bi-globe text-success me-3 fs-4"></i>
+                      <div>
+                          <h5 class="feature-title">Commitment to Sustainability</h5>
+                          <p>We prioritize eco-friendly practices, ensuring a better future for our planet while caring for you.</p>
+                      </div>
+                  </div>
+                  <!-- Buttons -->
+                  <div class="about-buttons mt-4">
+                      <a href="#products" class="btn btn-primary shadow me-3">Explore Products</a>
+                      <a href="#contact" class="btn btn-outline-dark shadow">Contact Us</a>
+                  </div>
+              </div>
           </div>
-    
-          <!-- Content Section -->
-          <div class="col-lg-6">
-            <h3 class="pb-3">{{ about.about_head }} </h3>
-            <p class="fst-italic">{{ about.about_subhead}} </p>
-            {% empty %}
-            <p class="text-center text-muted">No about content available at the moment.</p>
-            {% endfor %}
-    
-            <!-- Core Values as Icons with Text -->
-            <div class="d-flex align-items-start mt-4">
-              <i class="bi bi-heart-fill text-danger me-3 fs-4"></i>
-              <div>
-                <h5>Passion for Quality</h5>
-                <p>We partner with trusted brands to offer only the highest quality products, tailored to your needs.</p>
-              </div>
-            </div>
-    
-            <div class="d-flex align-items-start mt-4">
-              <i class="bi bi-stars text-warning me-3 fs-4"></i>
-              <div>
-                <h5>Celebrating Individuality</h5>
-                <p>Our products are designed to help you embrace and enhance your unique style, empowering you every day.</p>
-              </div>
-            </div>
-    
-            <div class="d-flex align-items-start mt-4">
-              <i class="bi bi-globe text-primary me-3 fs-4"></i>
-              <div>
-                <h5>Commitment to Sustainability</h5>
-                <p>We prioritize eco-friendly practices, ensuring a better future for our planet while caring for you.</p>
-              </div>
-            </div>
-    
-          </div>
-        </div>
-
       </div>
-    </section>
-    <!-- /About Section -->
-
+  </section>
+  
     <!-- Featured Products and Services Section -->
     <section id="featured-services" class="featured-services section">
       <div class="container">
@@ -153,7 +143,7 @@
               </div><!-- End Service Item -->
           </div>
       </div>
-    </section><!-- End Featured Services Section -->
+    </section>
    <!-- /Featured Products and Services Section -->
   <br/>
   <br/>
@@ -347,35 +337,47 @@
           <a class="nav-link" data-bs-toggle="tab" href="#bestsellers">Best Sellers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="tab" href="#discounted">Discounted Items</a>
+          <a class="nav-link" data-bs-toggle="tab" href="{% url 'cart:discounted' %}">Discounted Items</a>
         </li>
       </ul>
   
       <!-- Tab Content -->
       <div class="tab-content">
-        <!-- Featured Products -->
         <div class="tab-pane fade show active" id="featured">
-          <div class="row gy-4">
-            {% for product in new_arrival %}
-            <div class="col-md-3 col-sm-6">
-              <div class="product-card text-center p-4 rounded shadow-sm">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">
-                <h5 class="fw-bold">{{ product.name }}</h5>
-                <p class="text-muted mb-2">${{ product.price }}</p>
-                <a href="product.html?product={{ product.id }}" class="btn btn-outline-primary btn-sm">View Product</a>
-                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-primary">Add to Cart</a>
-              </div>
+          <div class="container py-5">
+            <div class="row product-list">
+                {% for product in products %}
+                <div class="col-lg-2 col-md-3 col-sm-4 mb-4">
+                    <div class="product-card shadow-sm rounded overflow-hidden">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid zoom-in">
+                        <div class="product-info p-3">
+                            <h3 class="product-title text-truncate">{{ product.name }}</h3>
+                            
+                            <!-- Shorten the description if it's too long -->
+                            <p class="product-description text-muted">
+                                {{ product.description|slice:":100" }}{% if product.description|length > 100 %}...{% endif %}
+                            </p>
+    
+                            <p class="product-price text-primary fw-bold">${{ product.price }}</p>
+                            <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary btn-sm w-100">Add to Cart</a>
+                            
+                            <!-- Quick View Button -->
+                            <button class="btn btn-secondary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#quickViewModal{{ product.id }}">
+                                Quick View
+                            </button>
+                        </div>
+                    </div>
+                </div>
+  
+                {% endfor %}
             </div>
-            {% empty %}
-            <p class="text-center">No featured products available at the moment.</p>
-            {% endfor %}
-          </div>
+        </div>
         </div>
   
         <!-- Best Sellers -->
         <div class="tab-pane fade" id="bestsellers">
           <div class="row gy-4">
-            {% for product in best_sellers %}
+            {% for product in products %}
             <div class="col-md-3 col-sm-6">
               <div class="product-card text-center p-4 rounded shadow-sm">
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3" style="height: 200px; object-fit: cover;">
@@ -413,8 +415,8 @@
           </div>
         </div>
       </div>
-    </div>
-    </section>
+     </div>
+  </section>
   
   
 
@@ -450,7 +452,7 @@
                     <textarea name="message" class="form-control" rows="5" placeholder="Your Message" required></textarea>
                   </div>
                   <div class="col-12 text-center">
-                    <button type="submit" class="btn btn-primary px-4 py-2">Send Message</button>
+                    <button type="submit" class="btn btn-primary px-4 py-2"><a href="{% url 'cart:thank' %}">Send Message</a></button>
                   </div>
                 </div>
               </form>
@@ -499,7 +501,6 @@
       </section>
       
       
-
 
   </main>
 

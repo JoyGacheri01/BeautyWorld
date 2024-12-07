@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import login_required
 import logging
 from django.contrib import messages
 
+from .models import Message
+
 # Create your views here.
 def view_cart(request):
     cart = request.session.get('cart', {})
@@ -68,28 +70,38 @@ def product_detail(request, product_id):
 
 def product(request):
 
-    products = NewArrival.objects.filter(category='new_arrival')
-    products = BestSellers.objects.filter(category='best_seller')
-    products = Discounted.objects.filter(category='discounted')
-    products = Cleansing.objects.filter(category='cleansing')
-    products = Oil.objects.filter(category = 'oil')
-    products = Treatment.objects.filter(category='treatment')
-    products = Braiding.objects.filter(category='braiding')
+    new_arrivals = NewArrival.objects.filter(category='new_arrival')
+    best_sellers = BestSellers.objects.filter(category='best_seller')
+    discounted = Discounted.objects.filter(category='discounted')
+    cleansing = Cleansing.objects.filter(category='cleansing')
+    oil = Oil.objects.filter(category='oil')
+    treatment = Treatment.objects.filter(category='treatment')
+    braiding = Braiding.objects.filter(category='braiding')
+
+    context = {
+        'new_arrivals': new_arrivals,
+        'best_sellers': best_sellers,
+        'discounted': discounted,
+        'cleansing': cleansing,
+        'oil': oil,
+        'treatment': treatment,
+        'braiding': braiding,
+    }
 
 
-    return render(request, 'products.html', {'products': products})
+    return render(request, 'products.html', context)
 
 def new_arrivals(request):
     products = NewArrival.objects.filter(category='new_arrival')
     return render(request, 'items/new_arrivals.html', {'products': products})
 
 def discounted(request):
-    products = NewArrival.objects.filter(category='new_arrival')
+    products = Discounted.objects.filter(category='discounted')
     return render(request, 'items/discounted.html', {'products': products})
 
 def best_seller(request):
-    products = BestSellers.objects.filter(category='new_arrival')
-    return render(request, 'items/discounted.html', {'products': products})
+    products = BestSellers.objects.filter(category='best_seller')
+    return render(request, 'items/best_sellers.html', {'products': products})
 
 def contact(request):
     return render(request, 'contact.html')
@@ -186,3 +198,24 @@ def checkout(request):
         cart_items.update(is_ordered=True)
         return redirect('order_confirmation', order.id)
     return render(request, 'checkout.html')
+
+def insert_message(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        new_message = Message(
+            name=name, 
+            email=email,
+            subject=subject,
+            message=message
+        )
+        new_message.save()
+        messages.success(request, "Thank you for contacting us. We will get back to you soon.")
+        return redirect('thank.html')
+    
+def thank(request):
+    return render(request, 'thank.html')
+
