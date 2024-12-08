@@ -331,7 +331,7 @@
       <!-- Tabs for Categories -->
       <ul class="nav nav-tabs justify-content-center mb-4">
         <li class="nav-item">
-          <a class="nav-link active" data-bs-toggle="tab" href="#new_arrival">New Arrivals</a>
+          <a class="nav-link active" data-bs-toggle="tab" href="#featured">New Arrivals</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="tab" href="#bestsellers">Best Sellers</a>
@@ -342,27 +342,18 @@
       </ul>
   
       <!-- Tab Content -->
-      <div class="tab-content id="new_arrival">
+      <div class="tab-content id ="new_arrival">
         <div class="tab-pane fade show active" id="featured">
           <div class="container py-5">
             <div class="row product-list">
                 {% for product in new_arrivals %}
-                <div class="col-lg-2 col-md-3 col-sm-4 mb-4">
-                    <div class="product-card shadow-sm rounded overflow-hidden">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid zoom-in">
-                        <div class="product-info p-3">
-                            <h3 class="product-title text-truncate">{{ product.name }}</h3>
-                            
-                            <!-- Shorten the description if it's too long -->
-                            <p class="product-description text-muted">
-                                {{ product.description|slice:":100" }}{% if product.description|length > 100 %}...{% endif %}
-                            </p>
-    
-                            <p class="product-price text-primary fw-bold">${{ product.price }}</p>
-                            <a href="{% url 'cart:add_to_cart' product.id %}" class="btn btn-primary btn-sm w-100">Add to Cart</a>
-                            <a href="{% url 'cart:products' product.id %}" class="btn btn-success">View Products</a>
-                        </div>
-                    </div>
+                <div class="card" style="width: 18rem;">
+                  <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.name}} </h5>
+                    <p class="card-text"> Price: {{ product.price }}</p>
+                    <a href="{% url 'cart:product' %}" class="btn btn-primary">View More Products</a>
+                  </div>
                 </div>
   
                 {% endfor %}
@@ -380,7 +371,7 @@
                 <h5 class="fw-bold">{{ product.name }}</h5>
                 <p class="text-muted">{{ product.desc }}</p>
                 <p class="text-primary fw-bold">${{ product.price }}</p>
-                <a href="product.html?product={{ product.id }}" class="btn btn-outline-primary btn-sm">View Product</a>
+                <a href="{% url 'cart:product' %}" class="btn btn-outline-primary btn-sm">View Product</a>
               </div>
             </div>
             {% empty %}

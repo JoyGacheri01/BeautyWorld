@@ -16,13 +16,14 @@
                     <h6 class="card-title" style="font-size: 14px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item.product.name }}</h6>
                     <p class="card-text" style="font-size: 12px;">Quantity: {{ item.quantity }}</p>
                     <p class="card-text" style="font-size: 12px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">{{ item.product.description|slice:":50" }}...</p>
-                    <p class="card-text" style="font-size: 12px;">Price: ${{ item.product.price }}</p>
+                    
                     <!-- Remove Button with Styling -->
                     <form action="{% url 'cart:remove_from_cart' item.product.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit">Remove</button>
                     </form>
                     <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+
 
                 </div>
             </div>
@@ -51,5 +52,7 @@
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}

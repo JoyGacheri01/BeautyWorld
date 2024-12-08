@@ -77,6 +77,7 @@ def product(request):
     oil = Oil.objects.filter(category='oil')
     treatment = Treatment.objects.filter(category='treatment')
     braiding = Braiding.objects.filter(category='braiding')
+    products = Product.objects.all()
 
     context = {
         'new_arrivals': new_arrivals,
@@ -86,6 +87,7 @@ def product(request):
         'oil': oil,
         'treatment': treatment,
         'braiding': braiding,
+        'products':products,
     }
 
 
@@ -107,8 +109,17 @@ def contact(request):
     return render(request, 'contact.html')
 
 def home(request):
-    products = Product.objects.all()
-    return render(request, 'home.html', {'products': products})
+    new_arrivals = NewArrival.objects.filter(category='new_arrival')
+    best_sellers = BestSellers.objects.filter(category='best_seller')
+    discounted = Discounted.objects.filter(category='discounted')
+
+    
+    context = {
+        'new_arrivals': new_arrivals,
+        'best_sellers': best_sellers,
+        'discounted': discounted,
+    }
+    return render(request, 'home.html', context)
 
 
 def blog_list(request):
@@ -166,39 +177,72 @@ def search(request):
 
 
 @login_required
-def order(request, order_id):
-    order = Order.objects.get(id=order_id, user=request.user)
-    return render(request, 'order.html', {
-        'order': order
-    })
+def order_view(request):
+    if request.method == 'POST':
+        product = request.POST('product')
+        quantity = request.POST('quantity')
+
+        order = Order.object.create(
+            user=request.user,
+            product=product,
+            quantity=quantity
+        )
+        messages.success(request, "Your order has been placed successfully!")
+        return redirect('order_confirmation')
+    return render(request, 'order.html')
+
+        
 
 @login_required
-def order_confirmation(request, order_id):
-    order = Order.objects.get(id=order_id, user=request.user)
-    order.status = 'Completed'
-    order.save()
-    CartItem.objects.filter(user=request.user, is_ordered=False).delete()
+def order_confirmation(request):
+    orders = Order.objects.filter(user=request.user).order_by('date_ordered')
+    if orders.exists():
+        order = orders.first()
+        order_item = order.items.all()
+    else:
+        return redirect('checkout')
+    
     return render(request, 'order_confirmation.html', {'order': order})
+
 
 @login_required
 def checkout(request):
+    cart_items = CartItem.objects.filter(user=request.user, is_ordered=False)
+    total_price = sum(item.product.price * item.quantity for item in cart_items)
+    order = Order.objects.create(user=request.user, total_price=total_price)
+
     if request.method == 'POST':
-        cart_items = CartItem.objects.filter(user=request.user, is_ordered=False)
-        if not cart_items:
-            return HttpResponse("Your Cart is empty, cannot proceed with checkout.")
-        total_price = sum(item.product.price * item.quantity for item in cart_items)
-        order = Order.objects.create(user=request.user, total_price=total_price)
+        shipping_address = {
+            'name': request.POST['name'],
+            'email': request.POST['email']
+        }
+
+        request.session['order']={
+            'shipping_address': shipping_address,
+            'total_price': total_price,
+        }
 
         for item in cart_items:
-            OrderItem.objects.create(
-                order=order, 
-                product=item.product, 
-                price=item.product.price, 
-                quantity=item.quantity
-            )
+            order.items.create(order=order, product=item.product, quantity=item.quantity)
+        
         cart_items.update(is_ordered=True)
-        return redirect('order_confirmation', order.id)
-    return render(request, 'checkout.html')
+
+        return redirect('cart:order_confirmation', order_id=order.id)
+    
+    return render(request, 'checkout.html', {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'shipping_address': {
+            'name': request.user.first_name + '' + request.user.last_name,
+
+            'email': request.user.email,
+        } if request.user.is_authenticated else{
+            'name': '',
+
+            'email': '',
+        },
+        'order': order,
+    })
 
 def insert_message(request):
     if request.method == 'POST':

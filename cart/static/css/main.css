@@ -981,14 +981,13 @@ body {
 
 h1.text-gradient {
     background: linear-gradient(to right, #ff7e5f, #feb47b);
-    -webkit-background-clip: text;
     color: transparent;
 }
 
-/* Section and Containers */
+
 section {
-    padding-top: 50px;
-    padding-bottom: 50px;
+    padding: auto;
+
 }
 
 .container {
@@ -1132,9 +1131,9 @@ section {
 
 /* General body styling */
 body {
-    background-color: #f8f9fa; /* Light background for the body */
+    background-color: #f8f9fa;
     font-family: Arial, sans-serif;
-    margin-top: 70px; /* Space for the fixed navbar */
+    margin-top: 70px; 
 }
 
 /* Section styling */
@@ -1148,9 +1147,9 @@ body {
 
 /* Navbar styling */
 .navbar {
-    background-color: #ffffff !important; /* Light background */
+    background-color: #ffffff !important; 
     z-index: 9999;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for the navbar */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 /* Navbar brand and links styling */
@@ -1172,7 +1171,7 @@ body {
 
 /* Offcanvas menu styling */
 .offcanvas {
-    background-color: #f0f0f0; /* Light background */
+    background-color: #f0f0f0; 
 }
 
 .offcanvas-header {
@@ -1244,5 +1243,121 @@ form .btn {
 
     .section {
         padding: 40px 15px;
+    }
+}
+
+
+.discounted-items-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #e74c3c;
+    margin-bottom: 30px;
+}
+
+.discounted-items-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.discounted-item-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.discounted-item-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.discounted-item-image-container {
+    overflow: hidden;
+    border-radius: 10px 10px 0 0;
+}
+
+.discounted-item-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.discounted-item-card:hover .discounted-item-image {
+    transform: scale(1.1);
+}
+
+.discounted-item-details {
+    padding: 15px;
+    text-align: center;
+}
+
+.discounted-item-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.price-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.original-price {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: #888;
+}
+
+.discounted-price {
+    font-size: 1.2rem;
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+.quantity,
+.total-price {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.btn-buy-now {
+    padding: 10px 20px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buy-now:hover {
+    background-color: #c0392b;
+}
+
+@media (max-width: 768px) {
+    .discounted-items-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .discounted-items-list {
+        grid-template-columns: 1fr;
     }
 }
