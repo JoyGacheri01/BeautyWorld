@@ -973,160 +973,6 @@ h5 {
 /* Products Styling */
 
 /* Global Styles */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-h1.text-gradient {
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
-    color: transparent;
-}
-
-
-section {
-    padding: auto;
-
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.row {
-    margin: 0;
-}
-
-.product-card {
-    background-color: #fff;
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    overflow: hidden;
-    height: 100%;
-    padding: 20px;
-    border: none;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-}
-
-.card-body {
-    text-align: center;
-    padding: 20px;
-}
-
-/* Product Image */
-.product-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    transition: transform 0.3s ease-in-out;
-}
-
-.product-image:hover {
-    transform: scale(1.1);
-}
-
-/* Card Title and Price */
-.card-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.product-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 15px;
-}
-
-/* Buttons */
-.btn {
-    text-align: center;
-    border-radius: 25px;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    border: none;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
-}
-
-.btn-secondary:hover {
-    background-color: #545b62;
-}
-
-
-/* Quick View Modal */
-.modal-content {
-    border-radius: 15px;
-}
-
-.modal-header {
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 15px 15px 0 0;
-}
-
-.modal-body {
-    padding: 30px;
-}
-
-.modal-title {
-    font-weight: bold;
-}
-
-/* Product Grid Styling */
-@media (min-width: 1200px) {
-    .col-lg-3 {
-        width: 23%;
-    }
-}
-
-@media (max-width: 992px) {
-    .col-md-3 {
-        width: 48%;
-    }
-}
-
-@media (max-width: 768px) {
-    .col-sm-4 {
-        width: 100%;
-    }
-    .product-card {
-        padding: 15px;
-    }
-    .card-body {
-        padding: 15px;
-    }
-}
-
-@media (max-width: 576px) {
-    .product-image {
-        height: 180px;
-    }
-    .product-price {
-        font-size: 1.2rem;
-    }
-}
 
 
 /* General body styling */
@@ -1246,6 +1092,96 @@ form .btn {
     }
 }
 
+/* Featured Items */
+#product-section {
+    background-color: #f8f9fa; /* Light gray for a clean look */
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+#product-section h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #343a40; /* Dark gray for contrast */
+}
+
+.card {
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #dee2e6; /* Subtle border */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: #495057; /* Medium gray for titles */
+}
+
+.card-price {
+    font-size: 1rem;
+    color: #6c757d; /* Slightly muted gray */
+}
+
+.card .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.card .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.card .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.card .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #4e555b;
+}
+
+.modal-header {
+    background-color: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-header .modal-title {
+    font-size: 1.5rem;
+    color: #343a40;
+}
+
+.modal-content {
+    border-radius: 8px;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border-color: #dee2e6;
+}
+
+.nav-tabs .nav-link.active {
+    color: #495057;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.tab-content {
+    background-color: #ffffff;
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+}
+
+
+
+/* Discounted Products */
 
 .discounted-items-section {
     margin-top: 40px;
@@ -1361,3 +1297,31 @@ form .btn {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* General body styling */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Card styling */
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #5a67d8;
+    border-color: #5a67d8;
+}
+
+.btn-primary:hover {
+    background-color: #434190;
+    border-color: #434190;
+}
+
+/* Footer link */
+.text-muted {
+    font-size: 0.9rem;
+}
+

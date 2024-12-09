@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Testimony</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Update Testimony</h1>
+        <form method="POST" action="" enctype="multipart/form-data" class="p-4 border rounded shadow-sm">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="content" class="form-label">Testimony Content</label>
+                <textarea class="form-control" id="content" name="content" rows="5" required>{{ testimony.content }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="author" class="form-label">Author</label>
+                <input type="text" class="form-control" id="author" name="author" value="{{ testimony.author }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Testimony</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS (optional for interactivity) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

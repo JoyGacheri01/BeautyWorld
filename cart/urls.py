@@ -21,6 +21,12 @@ urlpatterns = [
     path('insert_message/', views.insert_message, name="insert_message"),
     path('thank/', views.thank, name="thank"),
     path('checkout/', views.checkout, name='checkout'),
+    path('add_blog/', views.add_blog, name='add_blog'),
+    path('update/<int:id>/', views.update_blog, name='update_blog'),
+    path('delete/<int:id>/', views.delete_blog, name='delete_blog'),
+    path('add_testimony/', views.add_testimony, name='add_testimony'),
+    path('update_testimony/<int:id>/', views.update_testimony, name='update_testimony'),
+    path('delete_testimony/<int:id>/', views.delete_testimony, name='delete_testimony')
 
 
 ]

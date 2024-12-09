@@ -11,6 +11,7 @@ from django.contrib import messages
 
 from .models import Message
 
+
 # Create your views here.
 def view_cart(request):
     cart = request.session.get('cart', {})
@@ -121,13 +122,13 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
-
 def blog_list(request):
     posts = BlogPost.objects.all()  
-    testimonials = Testimonial.objects.all() 
+    testimonials = Testimonial.objects.all()
     return render(request, 'blog.html', {
         'posts': posts,
-        'testimonials': testimonials
+        'testimonials': testimonials,
+
     })
 
 def blog_details(request, blog_id):
@@ -135,8 +136,54 @@ def blog_details(request, blog_id):
     related_posts = BlogPost.objects.filter(category=blog.category).exclude(id=blog.id)[:5]
     return render(request, 'blog-details.html', {
         'blog': blog,
-        'related_posts': related_posts
+        'related_posts': related_posts,
+
     })
+
+def add_blog(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+        image = request.FILES.get('image')
+
+        if title and content and author:
+            blog_post = BlogPost(
+                title=title, 
+                content=content, 
+                author=author, 
+                image=image
+            )
+            blog_post.save()
+            messages.success(request, "Blog post created Successfully.")
+            return redirect('cart:blog_list')
+        else:
+            messages.error(request, "Please fill in all the required fields.")
+    return render(request, 'add_blog.html')
+
+def update_blog(request, id):
+    blog_post = get_object_or_404(BlogPost, id=id)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+        image = request.FILES.get('image')
+
+        blog_post.title = title
+        blog_post.content = content
+        blog_post.author = author
+        blog_post.image = image
+
+        blog_post.save()
+        messages.success(request, "Blog post updated Successfully.")
+        return redirect('cart:blog_list')
+    return render(request, 'updateBlog.html', {'blog_post': blog_post})
+
+def delete_blog(request, id):
+    blog_post = get_object_or_404(BlogPost, id=id)
+    blog_post.delete()
+    messages.success(request, "Blog post deleted Successfully.")
+    return redirect('cart:blog_list')
 
 def search(request):
     query = request.GET.get('q', '')
@@ -175,74 +222,33 @@ def search(request):
             list(treatment_results) + list(braiding_results)
     return render(request, 'results.html', {'results': results, 'query': query})
 
-
-@login_required
-def order_view(request):
-    if request.method == 'POST':
-        product = request.POST('product')
-        quantity = request.POST('quantity')
-
-        order = Order.object.create(
-            user=request.user,
-            product=product,
-            quantity=quantity
-        )
-        messages.success(request, "Your order has been placed successfully!")
-        return redirect('order_confirmation')
-    return render(request, 'order.html')
-
-        
-
-@login_required
-def order_confirmation(request):
-    orders = Order.objects.filter(user=request.user).order_by('date_ordered')
-    if orders.exists():
-        order = orders.first()
-        order_item = order.items.all()
-    else:
-        return redirect('checkout')
-    
-    return render(request, 'order_confirmation.html', {'order': order})
-
-
-@login_required
+      
 def checkout(request):
-    cart_items = CartItem.objects.filter(user=request.user, is_ordered=False)
-    total_price = sum(item.product.price * item.quantity for item in cart_items)
-    order = Order.objects.create(user=request.user, total_price=total_price)
+    cart = request.session.get('cart', {})
+    cart_items = []
+    total_price = 0
 
-    if request.method == 'POST':
-        shipping_address = {
-            'name': request.POST['name'],
-            'email': request.POST['email']
-        }
-
-        request.session['order']={
-            'shipping_address': shipping_address,
-            'total_price': total_price,
-        }
-
-        for item in cart_items:
-            order.items.create(order=order, product=item.product, quantity=item.quantity)
+    for product_id, quantity in cart.items():
+        product = Product.objects.get(id=product_id)
+        total_price += product.price * quantity
+        cart_items.append({
+            'id': product.id,
+            'name': product.name,
+            'quantity': quantity,
+             })
         
-        cart_items.update(is_ordered=True)
-
-        return redirect('cart:order_confirmation', order_id=order.id)
-    
     return render(request, 'checkout.html', {
         'cart_items': cart_items,
-        'total_price': total_price,
-        'shipping_address': {
-            'name': request.user.first_name + '' + request.user.last_name,
+        'total_price': total_price,  
 
-            'email': request.user.email,
-        } if request.user.is_authenticated else{
-            'name': '',
+      })
 
-            'email': '',
-        },
-        'order': order,
-    })
+
+def order_confirmation(request):
+    order_details = request.session.get('order_details', {})
+    
+    return render(request, 'order_confirmation.html', {'order_details': order_details})
+
 
 def insert_message(request):
     if request.method == 'POST':
@@ -263,4 +269,40 @@ def insert_message(request):
     
 def thank(request):
     return render(request, 'thank.html')
+
+def add_testimony(request):
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+
+        testimony = Testimonial(
+            content=content,
+            author=author
+        )
+
+        testimony.save()
+        messages.success(request, "Thank you for sharing your testimony with us.")
+        return redirect('cart:blog_list')
+    return render(request, 'add_testimony.html')
+
+def update_testimony(request, id):
+    testimony = get_object_or_404(Testimonial, id=id)
+    if request.method == 'POST':
+        content = request.POST.get('content')
+        author = request.POST.get('author')
+
+        testimony.content = content
+        testimony.author = author
+
+        testimony.save()
+        messages.success(request, "Testimony updated successfully.")
+        return redirect('cart:blog_list')
+    return render(request, 'update_testimony.html', {'testimony': testimony})
+
+def delete_testimony(request, id):
+    testimony = get_object_or_404(Testimonial, id=id)
+    testimony.delete()
+    messages.success(request, "Testimony deleted successfully.")
+    return redirect('cart:blog_list')
+
 
